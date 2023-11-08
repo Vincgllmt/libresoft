@@ -2,7 +2,9 @@
 <div class="d-flex flex-wrap gap-3 m-5">
     <% softwares.forEach(software => { %>
         <div class="card" style="width: 18rem;">
-            <img src="images/software/<%= software.id %>.png" class="card-img-top object-fit-contain m-2" alt="logo" height="150">
+            <a href="<%= software.external_resources.website %>" target="_blank" rel="noreferrer">
+            <img src="images/software/<%= software.id %>.png" class="card-img-top object-fit-contain p-2" alt="logo" height="150">
+            </a>
             <div class="card-body">
               <h5 class="card-title"><%= software.name %></h5>
               <p class="card-text"><%= software.description %></p>

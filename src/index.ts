@@ -1,8 +1,6 @@
-import express, { Request, Response, NextFunction} from "express";
-
-import softwareRouter from './software/software.routes'
-
 import 'dotenv/config'
+import express, { Request, Response, NextFunction} from "express";
+import softwareRouter from './software/software.routes'
 const app = express()
 const port = process.env.PORT ?? 8000;
 
@@ -19,7 +17,7 @@ app.use('/', softwareRouter)
 
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-    console.log(`ERREUR : ${err.message}`);
+    console.log("ERREUR :", err);
     res.render('error', { err });
 });
 

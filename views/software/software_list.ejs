@@ -1,0 +1,14 @@
+<%- include('../partials/header.ejs') %>
+<div class="d-flex flex-wrap gap-3 m-5">
+    <% softwares.forEach(software => { %>
+        <div class="card" style="width: 18rem;">
+            <img src="images/software/<%= software.id %>.png" class="card-img-top object-fit-contain m-2" alt="logo" height="150">
+            <div class="card-body">
+              <h5 class="card-title"><%= software.name %></h5>
+              <p class="card-text"><%= software.description %></p>
+              <a href="<%= software.url %>" class="btn btn-primary">Lien Libre</a>
+            </div>
+          </div>
+    <% }) %>
+</div>
+<%- include('../partials/footer.ejs') %>

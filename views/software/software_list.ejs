@@ -21,7 +21,10 @@
                 <% if (software.external_resources.framalibre) { %>
                   <a class="btn btn-outline-primary" href="<%= software.external_resources.framalibre.url %>" rel="noreferrer" target="_blank"><img src="/images/sites/framalibre.png" alt="framalibre" /></a>
                 <% } %>
-              </div>
+                <% if (software.usersCount > 0) { %>
+                  <a class="btn btn-primary d-flex gap-2 align-items-center" href="#"><img src="/images/user.png" alt="cdl" /> <%= software.usersCount %></a>
+                <% } %>
+                </div>
             </div>
           </div>
     <% }) %>

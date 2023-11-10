@@ -8,7 +8,20 @@
             <div class="card-body">
               <h5 class="card-title"><%= software.name %></h5>
               <p class="card-text"><%= software.description %></p>
-              <a href="<%= software.url %>" class="btn btn-primary">Lien Libre</a>
+              <div class="d-flex flex-wrap gap-2 my-2">
+                <% if (software.url) { %>
+                  <a class="btn btn-outline-primary" href="<%= software.url %>" rel="noreferrer" target="_blank"><img src="/images/sites/cdl.png" alt="cdl" /></a>
+                <% } %>
+                <% if (software.external_resources.wikipedia) { %>
+                  <a class="btn btn-outline-primary" href="<%= software.external_resources.wikipedia.url %>" rel="noreferrer" target="_blank"><img src="/images/sites/wikipedia.png" alt="wikipedia" /></a>
+                <% } %>
+                <% if (software.external_resources.sill) { %>
+                  <a class="btn btn-outline-primary" href="<%= software.external_resources.sill.url %>" rel="noreferrer" target="_blank"><img src="/images/sites/sill.png" alt="Sill" /></a>
+                <% } %>
+                <% if (software.external_resources.framalibre) { %>
+                  <a class="btn btn-outline-primary" href="<%= software.external_resources.framalibre.url %>" rel="noreferrer" target="_blank"><img src="/images/sites/framalibre.png" alt="framalibre" /></a>
+                <% } %>
+              </div>
             </div>
           </div>
     <% }) %>

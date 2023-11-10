@@ -5,6 +5,11 @@ interface Software {
     description: string;
     external_resources: {
         github: string,
-        website: string
+        website: string,
+        wikipedia: string,
+        repository: string,
+        cnll: object,
+        wikipedia: object,
+        sill: object
     }
 }

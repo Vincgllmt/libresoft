@@ -12,4 +12,5 @@ interface Software {
         wikipedia: object,
         sill: object
     }
+    users: SoftwareUsers[];
 }

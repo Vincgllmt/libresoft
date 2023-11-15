@@ -7,7 +7,12 @@ export class SoftwareController {
         if (result.isEmpty() && req.query.page) {
             const softwares = await softwareCollection.aggregate([
                 {
-                    $match: req.query.search ? { name : {$regex: /plu/, $options: 'i'} } : {}
+                    $match: req.query.search ? {
+                        $or: [
+                            { name: { $regex: req.query.search, $options: 'i' } }, 
+                            { description: { $regex: req.query.search, $options: 'i' } }
+                        ]
+                    } : {}
                 },
                 {
                     $project: {
@@ -36,7 +41,8 @@ export class SoftwareController {
             res.render('software/software_list', {
                 softwares: softwares[0].softwares,
                 total: Math.ceil(!softwares[0].total ? softwares[0].total[0].total_softwares / 20 : 0),
-                current_page: req.query.page
+                current_page: req.query.page,
+                search: req.query.search
             })
         } else {
             throw new Error("Invalid query")

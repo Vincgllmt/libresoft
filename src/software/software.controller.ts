@@ -30,7 +30,11 @@ export class SoftwareController {
                 }
             ]).toArray()
             console.dir(softwares, { depth: null })
-            res.render('software/software_list', { softwares: softwares[0].softwares, total: Math.ceil(softwares[0].total[0].total_softwares / 20), page: req.query.page })
+            res.render('software/software_list', { 
+                softwares: softwares[0].softwares, 
+                total: Math.ceil(softwares[0].total[0].total_softwares / 20), 
+                current_page: req.query.page 
+            })
         }else{
             throw new Error("Invalid query")
         }

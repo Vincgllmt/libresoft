@@ -1,9 +1,9 @@
 import { Router } from "express";
 import { UsersController } from "./users.controller";
 import expressAsyncHandler from 'express-async-handler'
-import { query } from "express-validator";
+import { param } from "express-validator";
 const router = Router();
 
-router.get('/:id', expressAsyncHandler(UsersController.list))
+router.get('/:id?', param("id").isNumeric().optional(), expressAsyncHandler(UsersController.list))
 
 export default router;

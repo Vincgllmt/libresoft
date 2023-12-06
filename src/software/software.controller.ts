@@ -37,7 +37,6 @@ export class SoftwareController {
                     }
                 }
             ]).toArray()
-            console.dir(softwares, { depth: null })
             res.render('software/software_list', {
                 softwares: softwares[0].softwares,
                 total: Math.ceil(!softwares[0].total ? softwares[0].total[0].total_softwares / 20 : 0),
@@ -46,6 +45,51 @@ export class SoftwareController {
             })
         } else {
             throw new Error("Invalid query")
+        }
+    }
+
+    static async edit(req: Request, res: Response, next: NextFunction) {
+        const result = validationResult(req);
+
+        if (result.isEmpty() && req.params.id) {
+            const software = await softwareCollection.findOne({ id: +req.params.id })
+            if (software) {
+                res.render('software/software_edit', {
+                    software: software
+                })
+            } else {
+                throw new Error("Software not found")
+            }
+        } else {
+            throw new Error("Invalid query")
+        }
+    }
+
+    static async editPost(req: Request, res: Response, next: NextFunction) {
+        const result = validationResult(req);
+
+        if (result && result.isEmpty() && req.params.id) {
+            const software = await softwareCollection.findOne({ id: +req.params.id })
+
+            console.log(req.body)
+
+            if (software) {
+                await softwareCollection.updateOne({ id: +req.params.id }, {
+                    $set: {
+                        name: req.body.name,
+                        url: req.body.url,
+                        description: req.body.description,
+                        external_resources: {
+                            wikipedia: req.body.url_wikipedia ? {
+                                url: req.body.url_wikipedia
+                            } : undefined,
+                        }
+                    }
+                })
+                res.redirect('/')
+            } else {
+                throw new Error("Software not found")
+            }
         }
     }
 }

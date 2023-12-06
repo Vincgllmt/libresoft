@@ -14,12 +14,6 @@ export class UsersController {
             software = {
                 users: (await softwareCollection.distinct('users') as SoftwareUsers[]).sort((a, b) => a.name.localeCompare(b.name))
             }
-            console.dir(software, { depth: null });
-            //console.log(uniqueUser)
-            // software = await softwareCollection.find<Software>({users: {id: {$in: uniqueUser}}}).toArray()
-            //software = await softwareCollection.aggregate<Software>([{
-            //    $match: { users: {$in: ['$users.id', uniqueUser]}}
-            //}]).toArray()
         }
         res.render('users/users_list', {
             software,

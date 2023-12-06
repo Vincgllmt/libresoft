@@ -4,13 +4,13 @@ interface Software {
     url: string;
     description: string;
     external_resources: {
-        github: string,
+        github: ?string,
         website: string,
-        wikipedia: string,
-        repository: string,
-        cnll: object,
-        wikipedia: object,
-        sill: object
+        wikipedia: ?string,
+        repository: ?string,
+        cnll: ?object,
+        wikipedia: ?object,
+        sill: ?object
     }
     users: SoftwareUsers[];
 }

@@ -1,3 +1,4 @@
+import { MongoServerError } from "mongodb";
 import { mongodb } from "../services/mongo";
 
 export const softwareCollection = mongodb.collection('software');
@@ -79,5 +80,29 @@ export class SoftwareSchema {
 
     static async showInvalidDocuments(): Promise<void> {
         console.log((await softwareCollection.find({$nor : [ SoftwareSchema.schema ]}).toArray()).map((s) => [s.name, s.id]));
+    }
+
+    static async applyToCollection() {
+        await mongodb.command({
+            collMod: 'software',
+            validator: SoftwareSchema.schema
+        }); 
+    }
+
+    static async dumpFromCollection() {
+        const options = await softwareCollection.options();
+        console.log('softwareSchema :');
+        console.dir(options.validator, { depth: null });
+    }
+
+    static async insertTestDocument(software: Software) {
+        try {
+            await softwareCollection.insertOne(software);
+        }
+        catch(err) {
+            const error = err as MongoServerError;
+            console.log(error.message);
+            console.dir(error.errInfo?.details, {depth: null});
+        }
     }
 }

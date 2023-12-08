@@ -24,7 +24,10 @@
                 <% if (software.usersCount > 0) { %>
                   <a class="btn btn-primary d-flex gap-2 align-items-center" href="/users/<%= software.id%>"><img src="/images/user.png" alt="cdl" /> <%= software.usersCount %></a>
                 <% } %>
-                </div>
+              </div>
+              <div>
+                <a class="btn btn-outline-primary" href="edit/<%=software.id%>">editer</a>
+              </div>
             </div>
           </div>
     <% }) %>

@@ -83,6 +83,12 @@ export class SoftwareController {
                             wikipedia: req.body.url_wikipedia ? {
                                 url: req.body.url_wikipedia
                             } : undefined,
+                            framalibre: req.body.url_framalibre ? {
+                                url: req.body.url_framalibre
+                            } : undefined,
+                            sill: req.body.url_sill ? {
+                                url: req.body.url_sill
+                            } : undefined,
                         }
                     }
                 })

@@ -25,6 +25,7 @@ export class SoftwareController {
                         url: 1,
                         description: 1,
                         external_resources: 1,
+                        lastModified: 1,
                     },
                 },
                 {

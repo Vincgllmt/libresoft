@@ -38,11 +38,14 @@
                               </a>
                               <% } %>
           </div>
-          <% if (user) { %>
-            <div>
-              <a class="btn btn-outline-primary" href="edit/<%=software.id%>">Editer</a>
-            </div>
+          <div class="d-flex justify-content-between gap-3 align-items-center">
+            <% if (software.lastModified) { %>
+             <span><%= software.lastModified.toLocaleString('fr-FR') %></span>
             <% } %>
+          <% if (user) { %>
+              <a class="btn btn-outline-primary" href="edit/<%=software.id%>">Editer</a>
+            <% } %>
+          </div>
         </div>
       </div>
       <% }) %>

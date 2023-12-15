@@ -6,3 +6,11 @@ declare module "express-session" {
         user: Contributor
     }
 }
+
+declare module "http" {
+    interface IncomingMessage {
+        session: Session & {
+            contributor: Contributor
+        }
+    }
+}

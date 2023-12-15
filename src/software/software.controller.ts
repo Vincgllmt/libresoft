@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { softwareCollection } from "./software.collection";
 import { validationResult } from "express-validator";
+import { ObjectId } from "mongodb";
 export class SoftwareController {
     static async list(req: Request, res: Response, next: NextFunction) {
         const result = validationResult(req);
@@ -26,7 +27,16 @@ export class SoftwareController {
                         description: 1,
                         external_resources: 1,
                         lastModified: 1,
+                        lastContributorId: 1,
                     },
+                },
+                {
+                    $lookup: {
+                        from: "contributors",
+                        localField: "lastContributorId",
+                        foreignField: "_id",
+                        as: "lastContributor"
+                    }
                 },
                 {
                     $facet: {
@@ -81,7 +91,7 @@ export class SoftwareController {
                         name: req.body.name,
                         url: req.body.url,
                         description: req.body.description,
-                        lastContributorId: req.session.user._id,
+                        lastContributorId: new ObjectId(req.session.user._id),
                         lastModified: new Date(),
                         external_resources: {
                             wikipedia: req.body.url_wikipedia ? {

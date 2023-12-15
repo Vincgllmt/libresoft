@@ -13,4 +13,6 @@ interface Software {
         sill: ?object
     }
     users: SoftwareUsers[];
+    lastModified?: Date;
+    lastContributorId?: ObjectId;
 }

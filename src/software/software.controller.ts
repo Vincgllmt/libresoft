@@ -68,17 +68,20 @@ export class SoftwareController {
     static async editPost(req: Request, res: Response, next: NextFunction) {
         const result = validationResult(req);
 
+        console.log(result)
         if (result && result.isEmpty() && req.params.id) {
+            
             const software = await softwareCollection.findOne({ id: +req.params.id })
-
             console.log(req.body)
 
-            if (software) {
+            if (software && req.session.user) {
                 await softwareCollection.updateOne({ id: +req.params.id }, {
                     $set: {
                         name: req.body.name,
                         url: req.body.url,
                         description: req.body.description,
+                        lastContributorId: req.session.user._id,
+                        lastModified: new Date(),
                         external_resources: {
                             wikipedia: req.body.url_wikipedia ? {
                                 url: req.body.url_wikipedia

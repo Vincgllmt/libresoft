@@ -19,14 +19,14 @@ router.post('/edit/:id',
     body("description")
         .isString(),
     body("url_wikipedia")
-    .isURL()
-    .optional(),
+        .optional({values: "falsy"})
+        .isURL(),
     body("url_sill")
-        .isURL()
-        .optional(),
+        .optional({values: "falsy"})
+        .isURL(),
     body("url_framalibre")
-        .isURL()
-        .optional(),
+        .optional({values: "falsy"})
+        .isURL(),
     expressAsyncHandler(SoftwareController.editPost))
 
 export default router;

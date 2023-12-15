@@ -17,7 +17,7 @@ export class AuthController {
             throw new Error("Mauvais mot de passe")
         }
         
-        req.session.regenerate(err => {
+        req.session.regenerate((err: any) => {
             if(!err) {
                 console.log(user);
                 req.session.user = user
@@ -26,7 +26,7 @@ export class AuthController {
         })
     } 
     static async logout(req: Request, res: Response) {
-        req.session.destroy(err => {
+        req.session.destroy(() => {
             res.redirect('/')
         })
     }

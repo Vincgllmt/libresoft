@@ -1,11 +1,61 @@
 <%- include("../partials/header") %>
 
-    <div class="container p-5" id="chat-container">
+    <div class="d-flex flex-grow-1 flex-column">
+        <div class="container p-5" id="chat-container">
+        </div>
+    
+        <div>
+            <form class="d-flex justify-content-center gap-3 m-5" id="chat-form">
+                <input type="text" id="message" class="form-control" />
+                <button class="btn btn-primary" id="send">Envoyer</button>
+            </form>
+        </div>
     </div>
 
     <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
     <script>
         const socket = io(window.location.origin);
+        const chatForm = document.getElementById('chat-form');
+        chatForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const message = document.getElementById('message').value;
+
+            if (message === '/clear') {
+                clearMessage();
+                document.getElementById('message').value = '';
+                return;
+            }
+
+            socket.emit('message', message);
+            document.getElementById('message').value = '';
+        });
+
+        const addUiMessage = (message) => {
+            const chatContainer = document.getElementById('chat-container');
+            const messageElement = document.createElement('div');
+
+            const messageText = document.createElement('span');
+            messageText.innerHTML = message;
+
+            messageElement.appendChild(messageText);
+            chatContainer.appendChild(messageElement);
+        }
+
+        const clearMessage = () => {
+            const chatContainer = document.getElementById('chat-container');
+            chatContainer.innerHTML = '';
+        }
+
+        socket.on('info', (data) => {
+            console.log(data);
+            addUiMessage(data)
+        });
+
+        socket.on('message', (data) => {
+            console.log(data);
+            addUiMessage(data)
+        });
+
     </script>
 
-<%- include("../partials/footer") %>
+    <%- include("../partials/footer") %>

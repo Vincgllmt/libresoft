@@ -1,50 +1,69 @@
 <%- include('../partials/header.ejs') %>
-<div class="d-flex flex-wrap justify-content-center gap-3 m-5">
-    <% softwares.forEach(software => { %>
-        <div class="card" style="width: 18rem;">
-            <a href="<%= software.external_resources.website %>" target="_blank" rel="noreferrer">
-            <img src="images/software/<%= software.id %>.png" class="card-img-top object-fit-contain p-2" alt="logo" height="150">
-            </a>
-            <div class="card-body">
-              <h5 class="card-title"><%= software.name %></h5>
-              <p class="card-text"><%= software.description %></p>
-              <div class="d-flex flex-wrap gap-2 my-2">
-                <% if (software.url) { %>
-                  <a class="btn btn-outline-primary" href="<%= software.url %>" rel="noreferrer" target="_blank"><img src="/images/sites/cdl.png" alt="cdl" /></a>
-                <% } %>
+  <div class="d-flex flex-wrap justify-content-center gap-3 m-5">
+    <% softwares.forEach(software=> { %>
+      <div class="card" style="width: 18rem;">
+        <a href="<%= software.external_resources.website %>" target="_blank" rel="noreferrer">
+          <img src="images/software/<%= software.id %>.png" class="card-img-top object-fit-contain p-2" alt="logo"
+            height="150">
+        </a>
+        <div class="card-body">
+          <h5 class="card-title">
+            <%= software.name %>
+          </h5>
+          <p class="card-text">
+            <%= software.description %>
+          </p>
+          <div class="d-flex flex-wrap gap-2 my-2">
+            <% if (software.url) { %>
+              <a class="btn btn-outline-primary" href="<%= software.url %>" rel="noreferrer" target="_blank"><img
+                  src="/images/sites/cdl.png" alt="cdl" /></a>
+              <% } %>
                 <% if (software.external_resources.wikipedia) { %>
-                  <a class="btn btn-outline-primary" href="<%= software.external_resources.wikipedia.url %>" rel="noreferrer" target="_blank"><img src="/images/sites/wikipedia.png" alt="wikipedia" /></a>
-                <% } %>
-                <% if (software.external_resources.sill) { %>
-                  <a class="btn btn-outline-primary" href="<%= software.external_resources.sill.url %>" rel="noreferrer" target="_blank"><img src="/images/sites/sill.png" alt="Sill" /></a>
-                <% } %>
-                <% if (software.external_resources.framalibre) { %>
-                  <a class="btn btn-outline-primary" href="<%= software.external_resources.framalibre.url %>" rel="noreferrer" target="_blank"><img src="/images/sites/framalibre.png" alt="framalibre" /></a>
-                <% } %>
-                <% if (software.usersCount > 0) { %>
-                  <a class="btn btn-primary d-flex gap-2 align-items-center" href="/users/<%= software.id%>"><img src="/images/user.png" alt="cdl" /> <%= software.usersCount %></a>
-                <% } %>
-              </div>
-              <div>
-                <a class="btn btn-outline-primary" href="edit/<%=software.id%>">editer</a>
-              </div>
-            </div>
+                  <a class="btn btn-outline-primary" href="<%= software.external_resources.wikipedia.url %>"
+                    rel="noreferrer" target="_blank"><img src="/images/sites/wikipedia.png" alt="wikipedia" /></a>
+                  <% } %>
+                    <% if (software.external_resources.sill) { %>
+                      <a class="btn btn-outline-primary" href="<%= software.external_resources.sill.url %>"
+                        rel="noreferrer" target="_blank"><img src="/images/sites/sill.png" alt="Sill" /></a>
+                      <% } %>
+                        <% if (software.external_resources.framalibre) { %>
+                          <a class="btn btn-outline-primary" href="<%= software.external_resources.framalibre.url %>"
+                            rel="noreferrer" target="_blank"><img src="/images/sites/framalibre.png"
+                              alt="framalibre" /></a>
+                          <% } %>
+                            <% if (software.usersCount> 0) { %>
+                              <a class="btn btn-primary d-flex gap-2 align-items-center"
+                                href="/users/<%= software.id%>"><img src="/images/user.png" alt="cdl" />
+                                <%= software.usersCount %>
+                              </a>
+                              <% } %>
           </div>
-    <% }) %>
-</div>
-<div class="d-flex justify-content-center">
-  <nav aria-label="Page navigation example">
-    <ul class="pagination">
-      <% if (current_page != 1) { %>
-        <li class="page-item"><a class="page-link" href="/?page=1">1</a></li>
-        <li class="page-item"><a class="page-link" href="/?page=<%= Number(current_page) - 1 %>">🠔</a></li>
-      <% } %>
-      <li class="page-item active"><a class="page-link" href="/?page=<%= current_page %>"><%= current_page %></a></li>
-      <% if (current_page != total) { %>
-        <li class="page-item"><a class="page-link" href="/?page=<%= Number(current_page) + 1 %>">➞</a></li>
-        <li class="page-item"><a class="page-link" href="/?page=<%= total %>"><%= total %></a></li>
-      <% } %>
-    </ul>
-  </nav>
-</div>
-<%- include('../partials/footer.ejs') %>
+          <% if (user) { %>
+            <div>
+              <a class="btn btn-outline-primary" href="edit/<%=software.id%>">Editer</a>
+            </div>
+            <% } %>
+        </div>
+      </div>
+      <% }) %>
+  </div>
+  <div class="d-flex justify-content-center">
+    <nav aria-label="Page navigation example">
+      <ul class="pagination">
+        <% if (current_page !=1) { %>
+          <li class="page-item"><a class="page-link" href="/?page=1">1</a></li>
+          <li class="page-item"><a class="page-link" href="/?page=<%= Number(current_page) - 1 %>">🠔</a></li>
+          <% } %>
+            <li class="page-item active"><a class="page-link" href="/?page=<%= current_page %>">
+                <%= current_page %>
+              </a></li>
+            <% if (current_page !=total) { %>
+              <li class="page-item"><a class="page-link" href="/?page=<%= Number(current_page) + 1 %>">➞</a></li>
+              <li class="page-item"><a class="page-link" href="/?page=<%= total %>">
+                  <%= total %>
+                </a></li>
+              <% } %>
+      </ul>
+    </nav>
+  </div>
+  <%- include('../partials/footer.ejs') %>

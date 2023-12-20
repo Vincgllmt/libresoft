@@ -11,6 +11,7 @@ export class AvatarController {
             user = await contributorCollection.findOne<Contributor>({ _id: new ObjectId(req.params.id) });
         } catch (error) {
             res.status(404).json({ message: "Invalid user id" });
+            return;
         }
 
         if (!user) {

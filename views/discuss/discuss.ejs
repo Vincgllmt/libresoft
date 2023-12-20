@@ -30,12 +30,19 @@
             document.getElementById('message').value = '';
         });
 
-        const addUiMessage = (message) => {
+        const addUiMessage = (message, avatar) => {
             const chatContainer = document.getElementById('chat-container');
             const messageElement = document.createElement('div');
 
             const messageText = document.createElement('span');
             messageText.innerHTML = message;
+
+            if (avatar) {
+                const avatarElement = document.createElement('img');
+                avatarElement.width = 50;
+                avatarElement.src = avatar;
+                messageElement.appendChild(avatarElement);
+            }
 
             messageElement.appendChild(messageText);
             chatContainer.appendChild(messageElement);
@@ -53,7 +60,7 @@
 
         socket.on('message', (data) => {
             console.log(data);
-            addUiMessage(data)
+            addUiMessage(data.message, `/avatar/${data.contributor_id}`)
         });
 
     </script>

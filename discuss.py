@@ -7,6 +7,6 @@ p.subscribe('message', 'info')
 
 while True:
     message = p.get_message()
-    if message:
+    if message and message['type'] == 'message':
         print(message)
     sleep(0.2)

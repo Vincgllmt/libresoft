@@ -15,8 +15,7 @@ import { DiscussServer } from './discuss/discuss.server';
 const app = express()
 const httpServer = createServer(app);
 
-const port = process.env.PORT ?? 8000;
-
+const port = process.argv[2] ?? process.env.PORT ?? 8000;
 app.set('view engine', 'ejs');
 const redisStore = new RedisStore({client: redis, prefix: 'session:'})
 const sessionMiddleware = session({

@@ -6,6 +6,7 @@ import softwareRouter from './software/software.routes'
 import usersRouter from './users/users.routes'
 import authRouter from './auth/auth.route';
 import discussRouter from './discuss/discuss.routes';
+import avatarRouter from './avatar/avatar.routes';
 import { sessionUser } from './auth/auth.middleware';
 import RedisStore from 'connect-redis';
 import { redis } from './services/redis';
@@ -37,6 +38,7 @@ app.use('/', softwareRouter)
 app.use('/', authRouter)
 app.use('/users', usersRouter)
 app.use('/chat', discussRouter)
+app.use('/avatar', avatarRouter)
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     console.log("ERREUR :", err);

@@ -14,8 +14,8 @@
         <div class="d-flex flex-column gap-3 border-start border-2">
             <div class="container p-5">
                 <h3>Utilisateurs connectés</h1>
-                <ul id="users">
-                </ul>
+                <div id="users" class="d-flex flex-column gap-2">
+                </div>
             </div>
     </div>
 
@@ -42,14 +42,15 @@
         const updateUsers = (users) => {
             usersElement.innerHTML = '';
             users.forEach(user => {
-                const userElement = document.createElement('li');
+                const userElement = document.createElement('div');
                 userElement.id = `user-${user.id}`;
-
+                userElement.className = "d-flex gap-2 align-items-center";
                 const avatarElement = document.createElement('img');
+                avatarElement.className = "rounded-circle"
                 const spanName = document.createElement('span');
                 spanName.innerHTML = user.name;
 
-                avatarElement.width = 50;
+                avatarElement.width = 60;
                 avatarElement.src = `/avatar/${user.id}`;
                 userElement.appendChild(avatarElement);
                 userElement.appendChild(spanName);
@@ -78,7 +79,8 @@
 
             if (avatar) {
                 const avatarElement = document.createElement('img');
-                avatarElement.width = 50;
+                avatarElement.width = 60;
+                avatarElement.className = "rounded-circle"
                 avatarElement.src = avatar;
                 messageElement.appendChild(avatarElement);
             }

@@ -2,6 +2,7 @@ import { Server as HttpServer } from "http";
 import { Server as IoServer, Socket } from "socket.io";
 import escapeHtml from "escape-html";
 import { RedisClientType, createClient } from "redis";
+import { redis } from "../services/redis";
 
 export class DiscussServer {
     private static io: IoServer;
@@ -28,13 +29,35 @@ export class DiscussServer {
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    private static onClientConnection(socket: Socket): void {
-        const contributor = socket.request.session.user.name;
-        socket.on('disconnect', (reason) => {
+    private static async onClientConnection(socket: Socket) {
+        const user = socket.request.session.user;
+        const contributor = user.name;
+
+        const sendUsers = async () => {
+            const users = await redis.hGetAll("discuss:connected");
+            socket.emit('users', Object.values(users).map(x => {
+                const userCacheData = JSON.parse(x);
+                return {
+                    id: userCacheData._id,
+                    name: userCacheData.name,
+                }
+            }));
+        }
+        
+        await redis.hSet("discuss:connected", String(socket.request.session.user._id), JSON.stringify({
+            _id: socket.request.session.user._id,
+            name: socket.request.session.user.name,
+        }));
+        
+        await sendUsers();
+
+        socket.on('disconnect', async (reason) => {
             const info = `${contributor} a quitté la discussion`;
             console.log(info);
             socket.broadcast.emit('info', info);
+            await sendUsers();
             DiscussServer.publishClient.publish('info', info);
+            redis.hDel("discuss:connected", socket.request.session.user._id);
         });
         socket.on('message', (message) => {
             console.log(message);
@@ -52,5 +75,9 @@ export class DiscussServer {
         const info = `${contributor} a rejoint la discussion`;
         DiscussServer.io.emit('info', info);
         console.log(info);
+    }
+
+    static sendAvatarUpdate(contributor_id: string) {
+        DiscussServer.io.emit('avatarupdate', {id: contributor_id});
     }
 }

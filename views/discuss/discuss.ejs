@@ -1,21 +1,30 @@
 <%- include("../partials/header") %>
 
-    <div class="d-flex flex-grow-1 flex-column">
-        <div class="container p-5" id="chat-container">
+    <div class="d-flex gap-2 mt-5">
+        <div class="d-flex flex-grow-1 flex-column">
+            <div class="container p-5" id="chat-container">
+            </div>
+            <div>
+                <form class="d-flex justify-content-center gap-3 m-5" id="chat-form">
+                    <input type="text" id="message" class="form-control" />
+                    <button class="btn btn-primary" id="send">Envoyer</button>
+                </form>
+            </div>
         </div>
-    
-        <div>
-            <form class="d-flex justify-content-center gap-3 m-5" id="chat-form">
-                <input type="text" id="message" class="form-control" />
-                <button class="btn btn-primary" id="send">Envoyer</button>
-            </form>
-        </div>
+        <div class="d-flex flex-column gap-3 border-start border-2">
+            <div class="container p-5">
+                <h3>Utilisateurs connectés</h1>
+                <ul id="users">
+                </ul>
+            </div>
     </div>
 
     <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
     <script>
         const socket = io(window.location.origin);
         const chatForm = document.getElementById('chat-form');
+        const usersElement = document.getElementById('users');
+
         chatForm.addEventListener('submit', (event) => {
             event.preventDefault();
             const message = document.getElementById('message').value;
@@ -29,6 +38,36 @@
             socket.emit('message', message);
             document.getElementById('message').value = '';
         });
+
+        const updateUsers = (users) => {
+            usersElement.innerHTML = '';
+            users.forEach(user => {
+                const userElement = document.createElement('li');
+                userElement.id = `user-${user.id}`;
+
+                const avatarElement = document.createElement('img');
+                const spanName = document.createElement('span');
+                spanName.innerHTML = user.name;
+
+                avatarElement.width = 50;
+                avatarElement.src = `/avatar/${user.id}`;
+                userElement.appendChild(avatarElement);
+                userElement.appendChild(spanName);
+
+                usersElement.appendChild(userElement);
+            });
+        }
+
+        const updateAvatar = (userId) => {
+            const userElement = document.getElementById(`user-${userId}`)
+
+            if (!userElement) {
+                return;
+            }
+
+            const avatarElement = userElement.querySelector('img');
+            avatarElement.src = `/avatar/${userId}?t=${new Date().getTime()}`;
+        }
 
         const addUiMessage = (message, avatar) => {
             const chatContainer = document.getElementById('chat-container');
@@ -61,6 +100,16 @@
         socket.on('message', (data) => {
             console.log(data);
             addUiMessage(data.message, `/avatar/${data.contributor_id}`)
+        });
+
+        socket.on('users', (users) => {
+            console.log('users', users);
+            updateUsers(users)
+        });
+
+        socket.on('avatarupdate', (data) => {
+            updateAvatar(data.id);
+            console.log('avatarupdate', data);
         });
 
     </script>

@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { contributorCollection } from "../auth/auth.collection";
 import { Contributor } from "../auth/auth";
 import { ObjectId } from "mongodb";
+import { DiscussServer } from "../discuss/discuss.server";
 
 export class AvatarController {
     static async avatar(req: Request, res: Response, next: NextFunction) {
@@ -17,7 +18,11 @@ export class AvatarController {
         if (!user) {
             res.status(404).json({ message: "User not found" });
         }else{
-            res.sendFile(user.avatar ?? "default_avatar.png", { root: "restricted/avatars" });
+            try{
+                res.sendFile(user.avatar ?? "default_avatar.png", { root: "restricted/avatars" });
+            }catch(error){
+                res.sendFile("default_avatar.png", { root: "restricted/avatars" });
+            }
         }
     }
 
@@ -45,6 +50,9 @@ export class AvatarController {
                 res.status(500).send(err);
             } else {
                 await contributorCollection.updateOne({ _id: new ObjectId(user._id) }, { $set: { avatar: `${user._id}.png` } });
+
+                DiscussServer.sendAvatarUpdate(String(user._id));
+
                 res.redirect("/avatar");
             }
         });

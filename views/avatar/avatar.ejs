@@ -1,0 +1,10 @@
+<%- include("../partials/header") %>
+<div class="d-flex justify-content-center flex-column align-items-center gap-3">
+    <h1>Voici votre avatar :</h1>
+    <img src="avatar/<%= locals.user._id %>" alt="avatar" width="100">
+    <form method="POST" enctype="multipart/form-data" class="d-flex gap-2">
+        <input class="form-control" type="file" name="avatar" id="avatar">
+        <button type="submit" class="btn btn-primary">Envoyer</button>
+    </form>
+</div>
+<%- include("../partials/footer") %>

@@ -20,4 +20,33 @@ export class AvatarController {
             res.sendFile(user.avatar ?? "default_avatar.png", { root: "restricted/avatars" });
         }
     }
+
+    static async avatarFormView(req: Request, res: Response, next: NextFunction) {
+        res.render('avatar/avatar');
+    }
+
+    static async avatarForm(req: Request, res: Response, next: NextFunction) {
+        if (!req.files || Object.keys(req.files).length === 0) {
+            res.status(400).send('No files were uploaded.');
+            return;
+        }
+
+        const avatar = req.files.avatar as any;
+
+        if (!avatar.mimetype.startsWith("image")) {
+            res.status(400).send('File is not an image.');
+            return;
+        }
+
+        const user = req.session.user as Contributor;
+
+        avatar.mv(`restricted/avatars/${user._id}.png`, async (err: any) => {
+            if (err) {
+                res.status(500).send(err);
+            } else {
+                await contributorCollection.updateOne({ _id: new ObjectId(user._id) }, { $set: { avatar: `${user._id}.png` } });
+                res.redirect("/avatar");
+            }
+        });
+    }
 }

@@ -12,7 +12,7 @@ import RedisStore from 'connect-redis';
 import { redis } from './services/redis';
 import { createServer } from 'http';
 import { DiscussServer } from './discuss/discuss.server';
-
+import fileUpload from 'express-fileupload';
 const app = express()
 const httpServer = createServer(app);
 
@@ -32,6 +32,9 @@ app.use(express.static('public'));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(fileUpload({
+  limits: { fileSize: 50 * 1024 * 1024 },
+}));
 app.use(sessionUser);
 
 app.use('/', softwareRouter)

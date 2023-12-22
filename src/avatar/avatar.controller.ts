@@ -51,7 +51,7 @@ export class AvatarController {
             } else {
                 await contributorCollection.updateOne({ _id: new ObjectId(user._id) }, { $set: { avatar: `${user._id}.png` } });
 
-                DiscussServer.sendAvatarUpdate(String(user._id));
+                await DiscussServer.sendAvatarUpdate(String(user._id));
 
                 res.redirect("/avatar");
             }

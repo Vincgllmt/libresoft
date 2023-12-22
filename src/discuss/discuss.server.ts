@@ -77,7 +77,9 @@ export class DiscussServer {
         console.log(info);
     }
 
-    static sendAvatarUpdate(contributor_id: string) {
-        DiscussServer.io.emit('avatarupdate', {id: contributor_id});
+    static async sendAvatarUpdate(contributor_id: string) {
+        if(await redis.hExists("discuss:connected", contributor_id)){
+            DiscussServer.io.emit('avatarupdate', {id: contributor_id});
+        }
     }
 }
